@@ -56,12 +56,16 @@ export const CyclingCalendar: React.FC<CyclingCalendarProps> = ({ cycling, phase
 
         const cfg = statusConfig[sub.status]
         return (
-          <div key={sub.id} className={`rounded-xl border p-4 ${cfg.bg} ${cfg.border}`}>
+          <div
+            key={sub.id}
+            className={`rounded-xl border p-4 ${cfg.bg} ${cfg.border} overflow-hidden relative`}
+            style={{ borderLeft: `3px solid ${cfg.dot}` }}
+          >
             <div className="flex items-center gap-3">
               <span className="text-2xl">{sub.emoji}</span>
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-white">{sub.name}</div>
-                <div className={`text-xs ${cfg.text} mt-0.5`}>{sub.info}</div>
+                <div className="font-semibold text-white">{sub.name}</div>
+                <div className={`text-xs ${cfg.text} mt-0.5 font-medium`}>{sub.info}</div>
               </div>
               <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold ${cfg.bg} ${cfg.text} ${cfg.border}`}>
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: cfg.dot }} />

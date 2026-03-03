@@ -20,11 +20,16 @@ const App: React.FC = () => {
 
   if (phaseState.loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-navy-800">
-        <div className="text-center">
-          <div className="text-5xl mb-4">🧠</div>
-          <div className="text-white font-bold text-xl">NeuroStack</div>
-          <div className="text-gray-400 text-sm mt-2">Laden...</div>
+      <div className="flex items-center justify-center h-screen bg-navy-900">
+        <div className="text-center animate-slideUp">
+          <div className="text-6xl mb-4 animate-pulse-glow inline-block">🧠</div>
+          <div className="text-2xl font-bold text-white tracking-tight">NeuroStack</div>
+          <div className="text-sm text-gray-400 mt-2 font-medium">Laden...</div>
+          <div className="mt-4 flex justify-center gap-1">
+            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+          </div>
         </div>
       </div>
     )

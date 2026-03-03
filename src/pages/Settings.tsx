@@ -61,7 +61,7 @@ const Settings: React.FC = () => {
         />
         <button
           onClick={handleSaveDate}
-          className={`w-full py-3 rounded-xl font-bold transition-all ${saved ? 'bg-green-600' : 'bg-blue-600 hover:bg-blue-700 active:scale-95'} text-white`}
+          className={`w-full py-3 rounded-xl font-bold transition-all ${saved ? 'bg-green-600' : 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 shadow-lg shadow-blue-600/30 active:scale-95'} text-white`}
         >
           {saved ? '✅ Gespeichert!' : '💾 Datum speichern'}
         </button>
@@ -73,14 +73,14 @@ const Settings: React.FC = () => {
 
         <button
           onClick={handleExport}
-          className="w-full py-3 rounded-xl font-medium bg-gray-700 hover:bg-gray-600 text-white transition-all active:scale-95"
+          className="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white transition-all active:scale-95"
         >
           📤 Daten exportieren (JSON)
         </button>
 
         <label className="block">
           <span className="sr-only">Backup importieren</span>
-          <div className="w-full py-3 rounded-xl font-medium bg-gray-700 hover:bg-gray-600 text-white text-center cursor-pointer transition-all active:scale-95">
+          <div className="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white text-center cursor-pointer transition-all active:scale-95">
             📥 Backup importieren
           </div>
           <input type="file" accept=".json" onChange={handleImport} className="sr-only" />

@@ -22,6 +22,14 @@ const Knowledge: React.FC = () => {
   const categories: FilterCategory[] = ['Alle', 'Grundversorgung', 'Neurorestorative', 'Nootropikum', 'Schlaf']
   const phases: FilterPhase[] = ['Alle', '1', '2', '3']
 
+  const categoryColors: Record<string, string> = {
+    'Alle': '#4361ee',
+    'Grundversorgung': '#4361ee',
+    'Neurorestorative': '#10b981',
+    'Nootropikum': '#f59e0b',
+    'Schlaf': '#8b5cf6',
+  }
+
   return (
     <div className="px-4 py-4 space-y-4 pb-8">
       <h2 className="text-xl font-bold text-white flex items-center gap-2">🧠 Wissensdatenbank</h2>
@@ -33,22 +41,29 @@ const Knowledge: React.FC = () => {
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Supplement suchen..."
-          className="w-full bg-navy-700 border border-gray-700 rounded-xl pl-10 pr-4 py-3 text-white placeholder-gray-500 text-sm focus:border-blue-500 focus:outline-none"
+          className="w-full bg-navy-700 border border-gray-700 rounded-xl pl-10 pr-4 py-3 text-white placeholder-gray-500 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
         />
       </div>
 
       <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
-        {categories.map(cat => (
-          <button
-            key={cat}
-            onClick={() => setCategoryFilter(cat)}
-            className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              categoryFilter === cat ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
+        {categories.map(cat => {
+          const isActive = categoryFilter === cat
+          const color = categoryColors[cat] ?? '#4361ee'
+          return (
+            <button
+              key={cat}
+              onClick={() => setCategoryFilter(cat)}
+              className="flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
+              style={
+                isActive
+                  ? { backgroundColor: color, color: '#fff', boxShadow: `0 0 10px ${color}60` }
+                  : { backgroundColor: 'rgba(255,255,255,0.07)', color: '#9ca3af' }
+              }
+            >
+              {cat}
+            </button>
+          )
+        })}
       </div>
 
       <div className="flex gap-2">
@@ -56,8 +71,8 @@ const Knowledge: React.FC = () => {
           <button
             key={p}
             onClick={() => setPhaseFilter(p)}
-            className={`flex-1 py-1.5 rounded-full text-xs font-medium transition-colors ${
-              phaseFilter === p ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
+            className={`flex-1 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              phaseFilter === p ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
             }`}
           >
             {p === 'Alle' ? 'Alle Phasen' : `Phase ${p}`}
