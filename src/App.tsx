@@ -8,14 +8,24 @@ import Tracking from './pages/Tracking'
 import Cycling from './pages/Cycling'
 import Knowledge from './pages/Knowledge'
 import Settings from './pages/Settings'
+import Calendar from './pages/Calendar'
+import Todo from './pages/Todo'
+import { getSetting } from './db/database'
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState('today')
   const phaseState = usePhase()
   const cycling = useCycling(phaseState.startDate)
+  const [strategy, setStrategy] = useState<'conservative' | 'experimental'>('conservative')
 
   useEffect(() => {
     document.documentElement.classList.add('dark')
+  }, [])
+
+  useEffect(() => {
+    getSetting('protocolStrategy').then(v => {
+      if (v === 'experimental') setStrategy('experimental')
+    })
   }, [])
 
   if (phaseState.loading) {
@@ -37,12 +47,14 @@ const App: React.FC = () => {
 
   const renderPage = () => {
     switch (activeTab) {
-      case 'today': return <Today phaseState={phaseState} cycling={cycling} />
+      case 'today': return <Today phaseState={phaseState} cycling={cycling} strategy={strategy} />
       case 'tracking': return <Tracking />
       case 'cycling': return <Cycling cycling={cycling} phaseState={phaseState} />
       case 'knowledge': return <Knowledge />
       case 'settings': return <Settings />
-      default: return <Today phaseState={phaseState} cycling={cycling} />
+      case 'calendar': return <Calendar />
+      case 'todo': return <Todo />
+      default: return <Today phaseState={phaseState} cycling={cycling} strategy={strategy} />
     }
   }
 

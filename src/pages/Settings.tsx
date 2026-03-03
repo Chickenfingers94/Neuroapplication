@@ -6,15 +6,23 @@ const Settings: React.FC = () => {
   const [startDate, setStartDate] = useState('')
   const [saved, setSaved] = useState(false)
   const [importStatus, setImportStatus] = useState('')
+  const [strategy, setStrategy] = useState<'conservative' | 'experimental'>('conservative')
 
   useEffect(() => {
     getSetting('protocolStartDate').then(v => { if (v) setStartDate(v) })
+    getSetting('protocolStrategy').then(v => { if (v === 'experimental') setStrategy('experimental') })
   }, [])
 
   const handleSaveDate = async () => {
     await setSetting('protocolStartDate', startDate)
     setSaved(true)
     setTimeout(() => { setSaved(false); window.location.reload() }, 1500)
+  }
+
+  const handleStrategyToggle = async () => {
+    const newStrategy = strategy === 'conservative' ? 'experimental' : 'conservative'
+    setStrategy(newStrategy)
+    await setSetting('protocolStrategy', newStrategy)
   }
 
   const handleExport = async () => {
@@ -67,6 +75,31 @@ const Settings: React.FC = () => {
         </button>
       </div>
 
+      {/* Strategy Mode */}
+      <div className="bg-navy-700 rounded-xl border border-gray-700 p-4 space-y-3">
+        <h3 className="font-semibold text-white flex items-center gap-2">🧬 Protokoll-Strategie</h3>
+        <div className={`p-3 rounded-lg text-sm border ${strategy === 'conservative' ? 'bg-blue-900/30 border-blue-700/50 text-blue-200' : 'bg-orange-900/30 border-orange-700/50 text-orange-200'}`}>
+          {strategy === 'conservative' ? (
+            <p>🛡️ <strong>Konservativ:</strong> Kein Dihexa. Fokus auf sicheres, wissenschaftlich gut belegtes Protokoll.</p>
+          ) : (
+            <p>⚗️ <strong>Experimentell:</strong> Dihexa inklusive. Begrenzte Humandaten – strenge Selbstbeobachtung erforderlich!</p>
+          )}
+        </div>
+        <button
+          onClick={handleStrategyToggle}
+          className={`w-full py-3 rounded-xl font-semibold transition-all active:scale-95 text-white ${
+            strategy === 'conservative'
+              ? 'bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500'
+              : 'bg-gradient-to-r from-orange-700 to-orange-600 hover:from-orange-600 hover:to-orange-500'
+          }`}
+        >
+          {strategy === 'conservative' ? '🔬 Zu Experimentell wechseln' : '🛡️ Zu Konservativ wechseln'}
+        </button>
+        <p className="text-xs text-gray-500">
+          Konservativ = kein Dihexa, max. Sicherheit. Experimentell = Dihexa inklusive, nur für erfahrene Nutzer mit ärztlicher Rücksprache.
+        </p>
+      </div>
+
       <div className="bg-navy-700 rounded-xl border border-gray-700 p-4 space-y-3">
         <h3 className="font-semibold text-white flex items-center gap-2">💾 Daten-Backup</h3>
         <p className="text-sm text-gray-400">Exportiere alle Daten als JSON-Datei oder importiere ein Backup.</p>
@@ -90,7 +123,7 @@ const Settings: React.FC = () => {
 
       <div className="bg-navy-700 rounded-xl border border-gray-700 p-4 space-y-2">
         <h3 className="font-semibold text-white flex items-center gap-2">ℹ️ Über NeuroStack</h3>
-        <p className="text-sm text-gray-400">Version 1.0.0</p>
+        <p className="text-sm text-gray-400">Version 2.0.0</p>
         <p className="text-sm text-gray-400">Persönlicher Biohacking & Supplement-Protokoll-Tracker basierend auf einem neurobiologischen Masterplan in 3 Phasen.</p>
         <div className="text-xs text-gray-500 mt-3 space-y-1">
           <p>Phase 1 (Wochen 1-4): Fundament 🏗️</p>

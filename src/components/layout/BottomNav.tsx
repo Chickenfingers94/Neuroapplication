@@ -10,8 +10,10 @@ const TABS: Tab[] = [
   { id: 'today', label: 'Heute', emoji: '🏠' },
   { id: 'tracking', label: 'Tracking', emoji: '📊' },
   { id: 'cycling', label: 'Cycling', emoji: '🔄' },
+  { id: 'calendar', label: 'Kalender', emoji: '📅' },
+  { id: 'todo', label: 'ToDo', emoji: '✅' },
   { id: 'knowledge', label: 'Wissen', emoji: '🧠' },
-  { id: 'settings', label: 'Einstellungen', emoji: '⚙️' }
+  { id: 'settings', label: 'Mehr', emoji: '⚙️' }
 ]
 
 interface BottomNavProps {
@@ -30,23 +32,23 @@ export const BottomNav: React.FC<BottomNavProps> = ({ active, onChange }) => {
         backgroundColor: 'rgba(26, 26, 46, 0.85)',
       }}
     >
-      <div className="flex items-center justify-around h-16">
+      <div className="flex items-center justify-around h-14">
         {TABS.map(tab => {
           const isActive = active === tab.id
           return (
             <button
               key={tab.id}
               onClick={() => onChange(tab.id)}
-              className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-all duration-200 relative ${
+              className={`flex flex-col items-center justify-center flex-1 h-full gap-0 transition-all duration-200 relative ${
                 isActive ? 'text-blue-400 scale-105' : 'text-gray-500 hover:text-gray-300 active:scale-95'
               }`}
-              style={{ minWidth: 48, minHeight: 48 }}
+              style={{ minWidth: 40, minHeight: 48 }}
             >
               {isActive && (
-                <span className="absolute top-1.5 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-blue-400 rounded-full" />
+                <span className="absolute top-1 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-blue-400 rounded-full" />
               )}
-              <span className="text-xl">{tab.emoji}</span>
-              <span className="text-xs font-medium">{tab.label}</span>
+              <span className="text-lg leading-none">{tab.emoji}</span>
+              <span className="text-[10px] font-medium mt-0.5">{tab.label}</span>
             </button>
           )
         })}

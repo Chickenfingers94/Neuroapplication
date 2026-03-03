@@ -4,6 +4,7 @@ import { CyclingStatus } from '../hooks/useCycling'
 import { useChecklist } from '../hooks/useChecklist'
 import { ProgressBar } from '../components/checklist/ProgressBar'
 import { WarningBanner } from '../components/checklist/WarningBanner'
+import { ConflictBanner } from '../components/checklist/ConflictBanner'
 import { ChecklistSection } from '../components/checklist/ChecklistSection'
 import { getTodayString } from '../utils/dateUtils'
 import { MORNING_ROUTINE, EVENING_ROUTINE } from '../data/checklists'
@@ -19,11 +20,12 @@ function formatLocalDate(date: Date): string {
 interface TodayProps {
   phaseState: PhaseState
   cycling: CyclingStatus
+  strategy: 'conservative' | 'experimental'
 }
 
-const Today: React.FC<TodayProps> = ({ phaseState, cycling }) => {
+const Today: React.FC<TodayProps> = ({ phaseState, cycling, strategy }) => {
   const date = getTodayString()
-  const { checklist, toggle, loading } = useChecklist(phaseState.phase.phase, cycling, date)
+  const { checklist, toggle, loading } = useChecklist(phaseState.phase.phase, cycling, date, strategy)
   const [streak, setStreak] = useState(0)
 
   useEffect(() => {
@@ -59,8 +61,15 @@ const Today: React.FC<TodayProps> = ({ phaseState, cycling }) => {
           </div>
         </div>
       )}
+      {strategy === 'experimental' && (
+        <div className="mx-4 mt-2 flex items-center gap-2 bg-orange-900/30 border border-orange-700/40 rounded-xl px-3 py-2 text-xs text-orange-300">
+          <span>⚗️</span>
+          <span>Experimenteller Modus aktiv – Dihexa inklusive. Strenge Selbstbeobachtung erforderlich.</span>
+        </div>
+      )}
       <ProgressBar completed={checklist.completed} total={checklist.total} phaseColor={phaseState.phase.color} />
       <WarningBanner cycling={cycling} phase={phaseState.phase.phase} />
+      <ConflictBanner cycling={cycling} phase={phaseState.phase.phase} />
 
       <ChecklistSection title="Morgens" emoji="☀️" items={checklist.morgens} onToggle={toggle} />
       <ChecklistSection title="Nachmittags ~14:00" emoji="🌤️" items={checklist.nachmittags} onToggle={toggle} />

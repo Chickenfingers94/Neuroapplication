@@ -18,7 +18,7 @@ export const WarningBanner: React.FC<WarningBannerProps> = ({ cycling, phase }) 
   if (cycling.isTAK653Allowed) activeConditions.push('tak653')
   if (cycling.isPhenylpiracetamAllowed && phase >= 3) activeConditions.push('phenylpiracetam')
 
-  const warnings = INTERACTION_WARNINGS.filter(w => activeConditions.includes(w.condition))
+  const warnings = INTERACTION_WARNINGS.filter(w => w.level === 'danger' && activeConditions.includes(w.condition))
   const synergies: typeof SYNERGY_NOTES = []
   if (phase >= 2) synergies.push(SYNERGY_NOTES[0])
   if (phase >= 3 && cycling.isDihexaDay) synergies.push(SYNERGY_NOTES[1])
