@@ -30,7 +30,7 @@ const Today: React.FC<TodayProps> = ({ phaseState, cycling }) => {
         d.setDate(d.getDate() - i)
         const dateStr = d.toISOString().split('T')[0]
         if (logDates.has(dateStr)) count++
-        else if (i > 0) break
+        else break
       }
       setStreak(count)
     }

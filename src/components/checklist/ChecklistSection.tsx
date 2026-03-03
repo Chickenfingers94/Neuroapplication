@@ -55,7 +55,7 @@ export const ChecklistSection: React.FC<ChecklistSectionProps> = ({ title, emoji
               </div>
               <div className={`text-xs mt-0.5 ${item.disabled ? 'text-gray-700' : item.completed ? 'text-emerald-600' : 'text-gray-400'}`}>
                 {item.disabled ? item.disabledReason : item.supplement.dose}
-                {item.isOptional && !item.disabled && ' · Optional'}
+                {item.isOptional && !item.disabled && ' • Optional'}
               </div>
             </div>
             {item.supplement.isOptional && !item.disabled && (

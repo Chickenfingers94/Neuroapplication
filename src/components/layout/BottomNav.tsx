@@ -35,7 +35,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ active, onChange }) => {
               className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-all duration-200 relative ${
                 isActive ? 'text-blue-400' : 'text-gray-500 hover:text-gray-300'
               }`}
-              style={{ minWidth: 48, minHeight: 48 }}
+              style={{ minWidth: 48 }}
             >
               {isActive && (
                 <span
