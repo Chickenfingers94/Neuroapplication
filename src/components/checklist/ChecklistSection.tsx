@@ -14,11 +14,11 @@ export const ChecklistSection: React.FC<ChecklistSectionProps> = ({ title, emoji
   const available = items.filter(i => !i.disabled).length
 
   return (
-    <div className="mb-4">
+    <div className="mb-5 animate-fade-in">
       <div className="flex items-center gap-2 px-4 py-2">
         <span className="text-lg">{emoji}</span>
-        <h3 className="font-semibold text-gray-200">{title}</h3>
-        <span className="text-xs text-gray-500 ml-auto">{done}/{available}</span>
+        <h3 className="font-bold text-gray-100 text-sm uppercase tracking-wide">{title}</h3>
+        <span className="text-xs text-gray-500 ml-auto bg-navy-900/60 px-2 py-0.5 rounded-full">{done}/{available}</span>
       </div>
       <div className="space-y-2 px-4">
         {items.map(item => (
@@ -26,32 +26,40 @@ export const ChecklistSection: React.FC<ChecklistSectionProps> = ({ title, emoji
             key={item.id}
             onClick={() => !item.disabled && onToggle(item.id)}
             disabled={item.disabled}
-            className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${
+            className={`w-full flex items-center gap-3 p-4 rounded-2xl border transition-all duration-200 text-left ${
               item.disabled
-                ? 'bg-gray-800/50 border-gray-700 opacity-50 cursor-not-allowed'
+                ? 'bg-navy-900/40 border-white/5 opacity-40 cursor-not-allowed'
                 : item.completed
-                ? 'bg-green-900/40 border-green-700'
-                : 'bg-navy-700 border-gray-700 hover:border-gray-500 active:scale-95'
+                ? 'bg-gradient-to-r from-emerald-900/60 to-teal-900/40 border-emerald-700/50'
+                : 'bg-navy-700/80 border-white/10 hover:border-blue-500/40 active:scale-[0.98]'
             }`}
-            style={{ minHeight: 56 }}
+            style={{ minHeight: 60 }}
           >
-            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-              item.disabled ? 'border-gray-600' : item.completed ? 'bg-green-500 border-green-500' : 'border-gray-500'
+            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
+              item.disabled
+                ? 'border-gray-700'
+                : item.completed
+                ? 'bg-emerald-500 border-emerald-500 scale-110'
+                : 'border-gray-500'
             }`}>
-              {item.completed && !item.disabled && <span className="text-white text-xs">✓</span>}
+              {item.completed && !item.disabled && <span className="text-white text-xs font-bold">✓</span>}
             </div>
-            <span className="text-lg flex-shrink-0">{item.supplement.emoji}</span>
+            <span className={`text-xl flex-shrink-0 transition-transform duration-200 ${item.completed && !item.disabled ? 'scale-110' : ''}`}>
+              {item.supplement.emoji}
+            </span>
             <div className="flex-1 min-w-0">
-              <div className={`text-sm font-medium ${item.disabled ? 'text-gray-500' : item.completed ? 'text-green-300 line-through' : 'text-white'}`}>
+              <div className={`text-sm font-semibold ${
+                item.disabled ? 'text-gray-600' : item.completed ? 'text-emerald-300 line-through decoration-emerald-600' : 'text-white'
+              }`}>
                 {item.supplement.name}
               </div>
-              <div className="text-xs text-gray-500 truncate">
+              <div className={`text-xs mt-0.5 ${item.disabled ? 'text-gray-700' : item.completed ? 'text-emerald-600' : 'text-gray-400'}`}>
                 {item.disabled ? item.disabledReason : item.supplement.dose}
                 {item.isOptional && !item.disabled && ' • Optional'}
               </div>
             </div>
             {item.supplement.isOptional && !item.disabled && (
-              <span className="text-xs bg-gray-700 px-2 py-0.5 rounded-full text-gray-400 flex-shrink-0">opt.</span>
+              <span className="text-xs bg-navy-900/60 border border-white/10 px-2 py-0.5 rounded-full text-gray-400 flex-shrink-0">opt.</span>
             )}
           </button>
         ))}
