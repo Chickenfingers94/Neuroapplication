@@ -12,20 +12,20 @@ export interface CycleResult {
 export function getBromantaneCycle(startDate: Date, currentDate: Date): CycleResult {
   const dayOfWeek = currentDate.getDay()
   const totalDays = daysBetween(startDate, currentDate)
-  const cycleLength = 10 * 7
+  const cycleLength = 5 * 7
   const posInCycle = totalDays % cycleLength
   const weekInCycle = Math.floor(posInCycle / 7) + 1
   
   if (dayOfWeek === 0 || dayOfWeek === 6) {
     const daysUntilMon = dayOfWeek === 0 ? 1 : 2
-    return { status: 'off', daysUntilNext: daysUntilMon, cycleDay: posInCycle, cycleInfo: `Woche ${weekInCycle}/10 – Wochenende (OFF)` }
+    return { status: 'off', daysUntilNext: daysUntilMon, cycleDay: posInCycle, cycleInfo: `Woche ${weekInCycle}/5 – Wochenende (OFF)` }
   }
   
-  if (weekInCycle <= 8) {
-    return { status: 'on', daysUntilNext: 0, cycleDay: posInCycle, cycleInfo: `Woche ${weekInCycle}/10 – Aktiv` }
+  if (weekInCycle <= 4) {
+    return { status: 'on', daysUntilNext: 0, cycleDay: posInCycle, cycleInfo: `Woche ${weekInCycle}/5 – Aktiv` }
   } else {
     const daysRemaining = cycleLength - posInCycle
-    return { status: 'pause', daysUntilNext: daysRemaining, cycleDay: posInCycle, cycleInfo: `Woche ${weekInCycle}/10 – Pause` }
+    return { status: 'pause', daysUntilNext: daysRemaining, cycleDay: posInCycle, cycleInfo: `Woche ${weekInCycle}/5 – Pause` }
   }
 }
 
@@ -37,8 +37,8 @@ export function get9MeBCCycle(startDate: Date, currentDate: Date): CycleResult {
   const weekInCycle = Math.floor(posInCycle / 7) + 1
   
   if (weekInCycle <= 2) {
-    if (dayOfWeek === 1 || dayOfWeek === 4) {
-      return { status: 'on', daysUntilNext: 0, cycleDay: posInCycle, cycleInfo: `Woche ${weekInCycle}/6 – Aktiv (Mo/Do)` }
+    if (dayOfWeek === 2 || dayOfWeek === 5) {
+      return { status: 'on', daysUntilNext: 0, cycleDay: posInCycle, cycleInfo: `Woche ${weekInCycle}/6 – Aktiv (Di/Fr)` }
     }
     return { status: 'off', daysUntilNext: 0, cycleDay: posInCycle, cycleInfo: `Woche ${weekInCycle}/6 – Kein Einnahmetag` }
   } else {

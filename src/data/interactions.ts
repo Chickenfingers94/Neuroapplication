@@ -69,7 +69,42 @@ export const INTERACTION_WARNINGS: InteractionWarning[] = [
     id: 'bromantane-long',
     level: 'caution',
     condition: 'bromantane',
-    message: 'Bromantane max 8 Wochen täglich! Toleranzentwicklung möglich',
+    message: 'Bromantane max 4 Wochen täglich! Toleranzentwicklung möglich',
+    emoji: '⚠️'
+  },
+  {
+    id: '9mebc-mb',
+    level: 'danger',
+    condition: '9mebc',
+    message: 'Heute KEIN Methylenblau! Doppelte MAO-Hemmung → Tyramin-Krise & serotonerge Überaktivierung',
+    emoji: '❌'
+  },
+  {
+    id: 'mb-9mebc',
+    level: 'danger',
+    condition: 'methylenblau',
+    message: 'Heute KEIN 9-Me-BC! Doppelte MAO-Hemmung → Serotonin-Syndrom-Risiko',
+    emoji: '❌'
+  },
+  {
+    id: '9mebc-lsd',
+    level: 'caution',
+    condition: '9mebc',
+    message: '9-Me-BC + LSD: Erhöhtes Serotonin-Risiko durch MAO-Hemmung + 5-HT2A-Agonismus',
+    emoji: '⚠️'
+  },
+  {
+    id: 'ltyrosin-9mebc',
+    level: 'caution',
+    condition: '9mebc',
+    message: 'L-Tyrosin heute auf 500mg reduzieren! MAO-Hemmung + DA-Precursor = Risiko für DA-Akkumulation',
+    emoji: '⚠️'
+  },
+  {
+    id: 'dihexa-onkogen',
+    level: 'caution',
+    condition: 'dihexa',
+    message: 'HGF/c-Met Pathway ist onkogen. Regelmäßige Hautuntersuchung empfohlen',
     emoji: '⚠️'
   }
 ]
@@ -80,5 +115,9 @@ export const SYNERGY_NOTES = [
   { id: 'nac-vitc', message: 'NAC + Vitamin C = maximale Antioxidans-Synergie', emoji: '✅' },
   { id: 'ltheanin-koffein', message: 'L-Theanin + Koffein = optimaler Fokus-Stack', emoji: '✅' },
   { id: 'sport-lm', message: "Sport + Lion's Mane = BDNF + NGF Turbo für Neurogenese", emoji: '✅' },
-  { id: 'mg-schlaf', message: 'Magnesium + Passionsblume + L-Theanin = sicherer Schlaf-Stack', emoji: '✅' }
+  { id: 'mg-schlaf', message: 'Magnesium + Passionsblume + L-Theanin = sicherer Schlaf-Stack', emoji: '✅' },
+  { id: 'ltyrosin-bromantane', message: 'L-Tyrosin + Bromantane = Substrat + TH-Upregulation = maximale DA-Synthese', emoji: '✅' },
+  { id: 'ltyrosin-p5p', message: 'L-Tyrosin + P5P (B6) = Substrat + AADC-Cofaktor = optimierte Catecholamin-Kette', emoji: '✅' },
+  { id: 'nac-taurin', message: 'NAC + Taurin = doppelte Glutamat-Protektion + Antioxidans-Synergie', emoji: '✅' },
+  { id: 'omega3-ps', message: 'Omega-3 + Phosphatidylserin = synergistische Membranreparatur', emoji: '✅' }
 ]
