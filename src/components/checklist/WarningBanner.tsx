@@ -30,18 +30,25 @@ export const WarningBanner: React.FC<WarningBannerProps> = ({ cycling, phase }) 
       {warnings.map(w => (
         <div
           key={w.id}
-          className={`flex items-start gap-2 p-3 rounded-xl text-sm font-medium ${
-            w.level === 'danger' ? 'bg-red-900/50 text-red-200 border border-red-700' : 'bg-yellow-900/50 text-yellow-200 border border-yellow-700'
+          className={`flex items-start gap-3 p-4 rounded-2xl text-sm font-medium animate-attention ${
+            w.level === 'danger'
+              ? 'bg-gradient-to-r from-red-900/70 to-red-950/50 text-red-200 border border-red-700/60'
+              : 'bg-gradient-to-r from-amber-900/70 to-amber-950/50 text-amber-200 border border-amber-700/60'
           }`}
+          style={{ boxShadow: w.level === 'danger' ? '0 0 16px rgba(239,68,68,0.15)' : '0 0 16px rgba(245,158,11,0.15)' }}
         >
-          <span className="text-base flex-shrink-0">{w.emoji}</span>
-          <span>{w.message}</span>
+          <span className="text-xl flex-shrink-0">{w.emoji}</span>
+          <span className="leading-relaxed">{w.message}</span>
         </div>
       ))}
       {synergies.map(s => (
-        <div key={s.id} className="flex items-start gap-2 p-3 rounded-xl text-sm font-medium bg-green-900/50 text-green-200 border border-green-700">
-          <span className="text-base flex-shrink-0">{s.emoji}</span>
-          <span>{s.message}</span>
+        <div
+          key={s.id}
+          className="flex items-start gap-3 p-4 rounded-2xl text-sm font-medium bg-gradient-to-r from-emerald-900/70 to-teal-950/50 text-emerald-200 border border-emerald-700/60"
+          style={{ boxShadow: '0 0 16px rgba(16,185,129,0.15)' }}
+        >
+          <span className="text-xl flex-shrink-0">{s.emoji}</span>
+          <span className="leading-relaxed">{s.message}</span>
         </div>
       ))}
     </div>

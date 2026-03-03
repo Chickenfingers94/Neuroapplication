@@ -10,39 +10,54 @@ interface CyclingProps {
 }
 
 const Cycling: React.FC<CyclingProps> = ({ cycling, phaseState }) => {
+  const yearProgress = Math.round((phaseState.weekNumber / 52) * 100)
+
   return (
     <div className="px-4 py-4 space-y-4 pb-8">
-      <h2 className="text-xl font-bold text-white flex items-center gap-2">🔄 Cycling-Status</h2>
-      <p className="text-sm text-gray-400">{formatGermanDate(new Date())}</p>
+      <h2 className="text-xl font-extrabold text-white flex items-center gap-2">🔄 Cycling-Status</h2>
+      <p className="text-sm text-gray-500">{formatGermanDate(new Date())}</p>
 
       {!phaseState.startDate ? (
-        <div className="bg-yellow-900/30 border border-yellow-700 rounded-xl p-4 text-yellow-300 text-sm">
+        <div className="bg-gradient-to-r from-amber-900/40 to-amber-950/20 border border-amber-700/40 rounded-2xl p-4 text-amber-300 text-sm leading-relaxed">
           ⚠️ Bitte lege zuerst dein Protokoll-Startdatum in den Einstellungen fest.
         </div>
       ) : (
         <>
-          <div className="bg-navy-700 rounded-xl border border-gray-700 p-4">
-            <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="bg-navy-700/80 rounded-2xl border border-white/5 p-4">
+            <div className="grid grid-cols-3 gap-4 text-center mb-4">
               <div>
-                <div className="text-2xl font-bold" style={{ color: phaseState.phase.color }}>
+                <div
+                  className="text-3xl font-extrabold"
+                  style={{ color: phaseState.phase.color, textShadow: `0 0 20px ${phaseState.phase.color}60` }}
+                >
                   {phaseState.phase.phase}
                 </div>
-                <div className="text-xs text-gray-500">Phase</div>
+                <div className="text-xs text-gray-500 mt-1">Phase</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-white">{phaseState.weekNumber}</div>
-                <div className="text-xs text-gray-500">Woche</div>
+                <div className="text-3xl font-extrabold text-white">{phaseState.weekNumber}</div>
+                <div className="text-xs text-gray-500 mt-1">Woche</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-white">
-                  {Math.round((phaseState.weekNumber / 52) * 100)}%
-                </div>
-                <div className="text-xs text-gray-500">Jahres-Ziel</div>
+                <div className="text-3xl font-extrabold text-white">{yearProgress}%</div>
+                <div className="text-xs text-gray-500 mt-1">Jahres-Ziel</div>
               </div>
+            </div>
+            {/* Year progress bar */}
+            <div className="w-full bg-navy-900/80 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-blue-600 to-indigo-400 transition-all duration-700"
+                style={{ width: `${yearProgress}%` }}
+              />
+            </div>
+            <div className="flex justify-between text-xs text-gray-600 mt-1">
+              <span>Phase 1</span>
+              <span>Phase 2</span>
+              <span>Phase 3</span>
             </div>
           </div>
 
-          <h3 className="font-semibold text-gray-300">Heutiger Cycling-Status</h3>
+          <h3 className="font-bold text-gray-200 text-sm uppercase tracking-wide">Heutiger Cycling-Status</h3>
           <CyclingCalendar cycling={cycling} phase={phaseState.phase.phase} />
         </>
       )}
