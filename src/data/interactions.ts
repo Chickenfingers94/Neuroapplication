@@ -32,10 +32,10 @@ export const INTERACTION_WARNINGS: InteractionWarning[] = [
   },
   {
     id: '9mebc-uv',
-    level: 'caution',
+    level: 'danger',
     condition: '9mebc',
-    message: 'UV-Licht strikt meiden! Sonnencreme + bedeckte Haut',
-    emoji: '⚠️'
+    message: '9-Me-BC Tag: UV-Licht strikt meiden! Neurotoxische Metabolite möglich. Sonnencreme + bedeckte Haut. Tipp: Wintermonate bevorzugt.',
+    emoji: '☀️'
   },
   {
     id: 'tak-phenyl',
@@ -105,6 +105,27 @@ export const INTERACTION_WARNINGS: InteractionWarning[] = [
     level: 'caution',
     condition: 'dihexa',
     message: 'HGF/c-Met Pathway ist onkogen. Regelmäßige Hautuntersuchung empfohlen',
+    emoji: '⚠️'
+  },
+  {
+    id: 'tak-9mebc',
+    level: 'danger',
+    condition: 'tak653',
+    message: 'Heute KEIN 9-Me-BC! Glutamat-Überaktivierung + DA-Akkumulation (AMPA-PAM + MAO-Hemmung)',
+    emoji: '❌'
+  },
+  {
+    id: '9mebc-tak',
+    level: 'danger',
+    condition: '9mebc',
+    message: 'Heute KEIN TAK-653! Glutamat + DA Überaktivierung (MAO-Hemmung + AMPA-PAM)',
+    emoji: '❌'
+  },
+  {
+    id: '5htp-ltyrosin',
+    level: 'caution',
+    condition: '5htp',
+    message: '5-HTP + L-Tyrosin nicht gleichzeitig! AADC-Enzym-Konkurrenz → ≥2h Abstand einhalten',
     emoji: '⚠️'
   }
 ]
