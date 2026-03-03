@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { getSetting, setSetting, exportAllData, importAllData } from '../db/database'
 import { formatShortGermanDate } from '../utils/dateUtils'
+import { useHabits } from '../hooks/useHabits'
+import { AddHabitModal } from '../components/habits/AddHabitModal'
 
 const Settings: React.FC = () => {
   const [startDate, setStartDate] = useState('')
   const [saved, setSaved] = useState(false)
   const [importStatus, setImportStatus] = useState('')
   const [strategy, setStrategy] = useState<'conservative' | 'experimental'>('conservative')
+  const [showAddHabit, setShowAddHabit] = useState(false)
+  const { habits, addCustomHabit, deleteCustomHabit } = useHabits()
 
   useEffect(() => {
     getSetting('protocolStartDate').then(v => { if (v) setStartDate(v) })
@@ -121,9 +125,42 @@ const Settings: React.FC = () => {
         {importStatus && <p className="text-sm text-center">{importStatus}</p>}
       </div>
 
+      <div className="bg-navy-700 rounded-xl border border-gray-700 p-4 space-y-3">
+        <h3 className="font-semibold text-white flex items-center gap-2">🏃 Habit Manager</h3>
+        <p className="text-sm text-gray-400">Verwalte deine Gewohnheiten. System-Gewohnheiten können nicht gelöscht werden.</p>
+        <div className="space-y-2">
+          {habits.map(h => (
+            <div key={h.id} className="flex items-center gap-3 p-2 rounded-lg bg-navy-800 border border-gray-700">
+              <span className="text-lg">{h.emoji}</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium text-white truncate">{h.name}</div>
+                <div className="text-xs text-gray-500">{h.category} · {h.frequency === 'daily' ? 'Täglich' : 'Benutzerdefiniert'}</div>
+              </div>
+              {!h.isSystemHabit && (
+                <button
+                  onClick={() => deleteCustomHabit(h.id)}
+                  className="text-xs text-red-400 hover:text-red-300 px-2 py-1 rounded transition-colors"
+                >
+                  Archivieren
+                </button>
+              )}
+              {h.isSystemHabit && (
+                <span className="text-xs text-gray-600 px-2">System</span>
+              )}
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={() => setShowAddHabit(true)}
+          className="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white transition-all active:scale-95"
+        >
+          + Neue Gewohnheit hinzufügen
+        </button>
+      </div>
+
       <div className="bg-navy-700 rounded-xl border border-gray-700 p-4 space-y-2">
         <h3 className="font-semibold text-white flex items-center gap-2">ℹ️ Über NeuroStack</h3>
-        <p className="text-sm text-gray-400">Version 2.0.0</p>
+        <p className="text-sm text-gray-400">Version 3.0.0</p>
         <p className="text-sm text-gray-400">Persönlicher Biohacking & Supplement-Protokoll-Tracker basierend auf einem neurobiologischen Masterplan in 3 Phasen.</p>
         <div className="text-xs text-gray-500 mt-3 space-y-1">
           <p>Phase 1 (Wochen 1-4): Fundament 🏗️</p>
@@ -132,6 +169,9 @@ const Settings: React.FC = () => {
         </div>
         <p className="text-xs text-red-400 mt-3">⚠️ Diese App ersetzt keine medizinische Beratung. Konsultiere einen Arzt vor der Einnahme von Supplements.</p>
       </div>
+      {showAddHabit && (
+        <AddHabitModal onClose={() => setShowAddHabit(false)} onAdd={addCustomHabit} />
+      )}
     </div>
   )
 }

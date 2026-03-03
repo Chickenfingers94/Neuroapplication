@@ -17,6 +17,7 @@ export const ConflictBanner: React.FC<ConflictBannerProps> = ({ cycling, phase }
   if (cycling.is9MeBCDay) activeConditions.push('9mebc')
   if (cycling.isTAK653Allowed) activeConditions.push('tak653')
   if (cycling.isPhenylpiracetamAllowed && phase >= 3) activeConditions.push('phenylpiracetam')
+  if (cycling.isDihexaDay && phase >= 3) activeConditions.push('dihexa')
   // Always show caution notes for supplements that may be taken
   if (phase >= 1) activeConditions.push('zink', '5htp', 'bromantane')
 
@@ -29,6 +30,10 @@ export const ConflictBanner: React.FC<ConflictBannerProps> = ({ cycling, phase }
   const activeSynergies = SYNERGY_NOTES.filter(s => {
     if (s.id === 'lm-dihexa') return cycling.isDihexaDay && phase >= 3
     if (s.id === 'creat-cdp') return phase >= 2
+    if (s.id === 'ltyrosin-bromantane') return cycling.isBromantaneDay && phase >= 2
+    if (s.id === 'ltyrosin-p5p') return phase >= 1
+    if (s.id === 'nac-taurin') return phase >= 1
+    if (s.id === 'omega3-ps') return phase >= 1
     return phase >= 1
   })
 

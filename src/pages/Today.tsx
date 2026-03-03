@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { PhaseState } from '../hooks/usePhase'
 import { CyclingStatus } from '../hooks/useCycling'
 import { useChecklist } from '../hooks/useChecklist'
+import { useHabits } from '../hooks/useHabits'
 import { ProgressBar } from '../components/checklist/ProgressBar'
 import { WarningBanner } from '../components/checklist/WarningBanner'
 import { ConflictBanner } from '../components/checklist/ConflictBanner'
 import { ChecklistSection } from '../components/checklist/ChecklistSection'
+import { HabitGrid } from '../components/habits/HabitGrid'
+import { AddHabitModal } from '../components/habits/AddHabitModal'
 import { getTodayString } from '../utils/dateUtils'
 import { MORNING_ROUTINE, EVENING_ROUTINE } from '../data/checklists'
 import { db } from '../db/database'
@@ -26,6 +29,8 @@ interface TodayProps {
 const Today: React.FC<TodayProps> = ({ phaseState, cycling, strategy }) => {
   const date = getTodayString()
   const { checklist, toggle, loading } = useChecklist(phaseState.phase.phase, cycling, date, strategy)
+  const { scheduledToday, completedToday: habitsCompleted, toggleHabit, addCustomHabit } = useHabits()
+  const [showAddHabit, setShowAddHabit] = useState(false)
   const [streak, setStreak] = useState(0)
 
   useEffect(() => {
@@ -71,9 +76,36 @@ const Today: React.FC<TodayProps> = ({ phaseState, cycling, strategy }) => {
       <WarningBanner cycling={cycling} phase={phaseState.phase.phase} />
       <ConflictBanner cycling={cycling} phase={phaseState.phase.phase} />
 
+      <ChecklistSection title="Nüchtern" emoji="🌅" items={checklist.nüchtern} onToggle={toggle} />
       <ChecklistSection title="Morgens" emoji="☀️" items={checklist.morgens} onToggle={toggle} />
       <ChecklistSection title="Nachmittags ~14:00" emoji="🌤️" items={checklist.nachmittags} onToggle={toggle} />
       <ChecklistSection title="Abends (1h vor Schlaf)" emoji="🌙" items={checklist.abends} onToggle={toggle} />
+
+      <div className="px-4 mt-4">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-semibold text-gray-300 flex items-center gap-2">
+            <span>🏃</span> Gewohnheiten-Tracker
+          </h3>
+          <button
+            onClick={() => setShowAddHabit(true)}
+            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded-full transition-colors"
+          >
+            + Hinzufügen
+          </button>
+        </div>
+        {scheduledToday.length > 0 ? (
+          <HabitGrid habits={scheduledToday} onToggle={toggleHabit} />
+        ) : (
+          <p className="text-sm text-gray-500 text-center py-4">Keine Gewohnheiten für heute geplant.</p>
+        )}
+        {habitsCompleted > 0 && (
+          <p className="text-xs text-green-400 text-center mt-2">🎉 {habitsCompleted}/{scheduledToday.length} Gewohnheiten erledigt!</p>
+        )}
+      </div>
+
+      {showAddHabit && (
+        <AddHabitModal onClose={() => setShowAddHabit(false)} onAdd={addCustomHabit} />
+      )}
 
       <div className="px-4 mt-4 space-y-3">
         <h3 className="font-semibold text-gray-300 flex items-center gap-2">

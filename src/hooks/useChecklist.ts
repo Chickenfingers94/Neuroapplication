@@ -14,6 +14,7 @@ export interface ChecklistItem {
 }
 
 export interface DailyChecklist {
+  nüchtern: ChecklistItem[]
   morgens: ChecklistItem[]
   nachmittags: ChecklistItem[]
   abends: ChecklistItem[]
@@ -67,15 +68,16 @@ export function useChecklist(phase: 1 | 2 | 3, cycling: CyclingStatus, date: str
       return { id: s.id, supplement: s, completed: completions[s.id] || false, isOptional: s.isOptional, disabled, disabledReason }
     }
 
+    const nüchtern = availableSupplements.filter(s => s.timeOfDay.includes('nüchtern')).map(toItem)
     const morgens = availableSupplements.filter(s => s.timeOfDay.includes('morgens')).map(toItem)
     const nachmittags = availableSupplements.filter(s => s.timeOfDay.includes('nachmittags')).map(toItem)
     const abends = availableSupplements.filter(s => s.timeOfDay.includes('abends')).map(toItem)
 
-    const allItems = [...morgens, ...nachmittags, ...abends]
+    const allItems = [...nüchtern, ...morgens, ...nachmittags, ...abends]
     const notDisabled = allItems.filter(i => !i.disabled)
     const completed = notDisabled.filter(i => i.completed).length
 
-    return { morgens, nachmittags, abends, total: notDisabled.length, completed }
+    return { nüchtern, morgens, nachmittags, abends, total: notDisabled.length, completed }
   }, [phase, cycling, dayOfWeek, completions, strategy])
 
   const toggle = useCallback(async (itemId: string) => {

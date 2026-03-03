@@ -33,8 +33,8 @@ export function useCycling(startDate: Date | null, currentDate: Date = new Date(
     const is9MeBCDay = nineMe.status === 'on'
     const isDihexaDay = dihexa.status === 'on'
     const isBromantaneDay = bromantane.status === 'on'
-    const isPhenylpiracetamAllowed = [1, 3, 5].includes(dayOfWeek)
-    const isTAK653Allowed = [2, 4, 6].includes(dayOfWeek)
+    const isPhenylpiracetamAllowed = [1, 3].includes(dayOfWeek)
+    const isTAK653Allowed = [4, 6].includes(dayOfWeek)
 
     return { bromantane, methylenblau, '9mebc': nineMe, dihexa, lsd, isMethylenblauDay, isLSDDay, is9MeBCDay, isDihexaDay, isBromantaneDay, isPhenylpiracetamAllowed, isTAK653Allowed }
   }, [startDate, currentDate])

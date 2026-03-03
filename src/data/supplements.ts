@@ -7,7 +7,7 @@ export interface Supplement {
   dose: string
   category: SupplementCategory
   phase: Phase
-  timeOfDay: ('morgens' | 'nachmittags' | 'abends')[]
+  timeOfDay: ('nüchtern' | 'morgens' | 'nachmittags' | 'abends')[]
   mechanism: string
   effects: string
   cycling?: string
@@ -16,6 +16,10 @@ export interface Supplement {
   emoji: string
   color: string
   isOptional?: boolean
+  timingNote?: string
+  criticalNote?: string
+  riskLevel?: 'safe' | 'monitored' | 'experimental' | 'research-only'
+  synergiesWith?: string[]
 }
 
 export const SUPPLEMENTS: Supplement[] = [
@@ -34,12 +38,14 @@ export const SUPPLEMENTS: Supplement[] = [
   {
     id: 'vitamin-d3-k2',
     name: 'Vitamin D3 + K2',
-    dose: '4000-5000 IU + 200µg',
+    dose: '5.600 IU + 200µg K2 (1 Kapsel TÄGLICH)',
     category: 'Grundversorgung',
     phase: 1,
     timeOfDay: ['morgens'],
-    mechanism: 'D3 ist eigentlich ein Hormon – reguliert über 1000 Gene. K2 sorgt für korrekte Calcium-Verteilung (Knochen statt Arterien).',
+    mechanism: 'D3 ist eigentlich ein Hormon – reguliert über 1000 Gene. K2 sorgt für korrekte Calcium-Verteilung (Knochen statt Arterien). Laut Etikett: 1 Kapsel = Dreitagesportion, aber für dieses Protokoll TÄGLICH einnehmen (5.600 IU ist weit unter toxischer Grenze von 10.000 IU).',
     effects: 'Immunsystem, Stimmung, Hormonbalance, Knochengesundheit',
+    timingNote: 'Mit fetthaltigem Frühstück. TÄGLICH statt alle 3 Tage!',
+    riskLevel: 'safe',
     emoji: '☀️',
     color: '#f59e0b'
   },
@@ -58,12 +64,13 @@ export const SUPPLEMENTS: Supplement[] = [
   {
     id: 'nac',
     name: 'NAC',
-    dose: '600mg',
+    dose: '600mg (morgens)',
     category: 'Neurorestorative',
     phase: 1,
     timeOfDay: ['morgens'],
-    mechanism: 'N-Acetylcystein ist eine Glutathion-Vorstufe. Glutathion ist das wichtigste zelluläre Antioxidans – schützt Neuronen vor oxidativem Stress.',
+    mechanism: 'N-Acetylcystein ist eine Glutathion-Vorstufe. Glutathion ist das wichtigste zelluläre Antioxidans – schützt Neuronen vor oxidativem Stress. 600mg 1x/Tag ist subtherapeutisch für Glutamat-Regulation (LaRowe et al., 2007). Zweite Abenddosis als separate Ergänzung empfohlen.',
     effects: 'Antioxidativer Schutz, Entgiftung, Stimmungsstabilisierung',
+    riskLevel: 'safe',
     emoji: '🛡️',
     color: '#10b981'
   },
@@ -82,13 +89,14 @@ export const SUPPLEMENTS: Supplement[] = [
   {
     id: 'zink',
     name: 'Zink',
-    dose: '15-25mg',
+    dose: '10-15mg (separates Zink)',
     category: 'Grundversorgung',
     phase: 1,
-    timeOfDay: ['morgens'],
+    timeOfDay: ['nachmittags'],
     daysOfWeek: [1, 3, 5],
     mechanism: 'Cofaktor für über 300 Enzyme. Wichtig für Testosteron-Synthese, Immunfunktion und NMDA-Rezeptor-Modulation.',
     effects: 'Hormonbalance, Immunsystem, kognitive Funktion',
+    timingNote: 'NACHMITTAGS nehmen! ≥2h nach Multi (enthält Eisen → DMT1-Transporter-Konkurrenz). Multi enthält bereits 14mg Zink → Gesamtdosis 24-29mg.',
     emoji: '🔩',
     color: '#6b7280'
   },
@@ -99,7 +107,7 @@ export const SUPPLEMENTS: Supplement[] = [
     category: 'Neurorestorative',
     phase: 1,
     timeOfDay: ['morgens'],
-    mechanism: 'EPA und DHA sind Baubausteine für Zellmembranen im Gehirn. DHA macht 40% der Gehirnfettsäuren aus – essentiell für neuronale Funktion.',
+    mechanism: 'EPA und DHA sind Baubausteine für Zellmembranen im Gehirn. DHA macht 20% der Gehirnfettsäuren aus (40% bezieht sich nur auf PUFAs der grauen Substanz) – essentiell für neuronale Funktion.',
     effects: 'Zellmembran-Integrität, Entzündungshemmung, Stimmung, Kognition',
     emoji: '🐟',
     color: '#4361ee'
@@ -147,7 +155,7 @@ export const SUPPLEMENTS: Supplement[] = [
     category: 'Schlaf',
     phase: 1,
     timeOfDay: ['abends'],
-    mechanism: 'Cofaktor für über 300 Enzyme. Blockiert NMDA-Rezeptoren → reduziert Überreizung. Aktiviert GABA-Rezeptoren → fördert Schlaf und Entspannung.',
+    mechanism: '7-Fach-Komplex: Citrat, Oxid, Bisglycinat, Malat, Lactat, L-Lysinat, L-Ascorbat. Bisglycinat überquert BHS für GABA-Modulation. Oxid hat schlechte Bioverfügbarkeit (4%), wird durch die anderen 6 Formen kompensiert. Für maximale kognitive Wirkung: Mg-L-Threonat als Ergänzung empfohlen.',
     effects: 'Schlafqualität, Muskelentspannung, Stressreduktion, Neuroprotektion',
     emoji: '🧲',
     color: '#6b7280'
@@ -192,6 +200,79 @@ export const SUPPLEMENTS: Supplement[] = [
     color: '#10b981'
   },
   {
+    id: 'l-tyrosin',
+    name: 'L-Tyrosin',
+    dose: '500-1000mg',
+    category: 'Neurorestorative',
+    phase: 1,
+    timeOfDay: ['nüchtern'],
+    mechanism: 'Direkter Precursor der Catecholamin-Kaskade: L-Tyrosin → (TH + BH4) → L-DOPA → (AADC + P5P) → Dopamin → Noradrenalin. KRITISCHE Synergie mit Bromantane (TH-Upregulation braucht Substrat) und 9-Me-BC. Nüchtern einnehmen – LAT1-Transporter-Konkurrenz mit anderen Aminosäuren.',
+    effects: 'Dopamin/NE-Precursor, Bromantane-Synergie, kognitive Belastbarkeit, Stressresistenz',
+    cycling: 'Täglich. An 9-Me-BC-Tagen auf 500mg reduzieren',
+    interactions: ['9mebc'],
+    synergiesWith: ['bromantane', 'b-komplex'],
+    timingNote: 'NÜCHTERN, 30min vor Frühstück',
+    riskLevel: 'safe',
+    emoji: '🧪',
+    color: '#f59e0b'
+  },
+  {
+    id: 'b-komplex',
+    name: 'Methylierter B-Komplex',
+    dose: 'P5P 25mg + 5-MTHF 400µg + Methylcobalamin 1000µg',
+    category: 'Grundversorgung',
+    phase: 1,
+    timeOfDay: ['abends'],
+    mechanism: 'Korrigiert kritischen Engpass im Multi (Pyridoxin statt P5P, Folsäure statt Methylfolat, Cyanocobalamin statt Methylcobalamin). P5P = aktive B6-Form, Co-Faktor für AADC (konvertiert 5-HTP→Serotonin und L-DOPA→Dopamin). Methylfolat + Methylcobalamin = Methylierungszyklus → SAMe → NT-Methylierung. 30-40% der Bevölkerung haben MTHFR-Polymorphismus.',
+    effects: 'NT-Synthese-Cofaktoren, Methylierungszyklus, Homocystein-Senkung',
+    criticalNote: 'Ohne korrekte B-Vitamine können weder 5-HTP noch L-Tyrosin effizient zu Serotonin bzw. Dopamin konvertiert werden.',
+    riskLevel: 'safe',
+    emoji: '🧬',
+    color: '#8b5cf6'
+  },
+  {
+    id: 'taurin',
+    name: 'Taurin',
+    dose: '1-2g',
+    category: 'Neurorestorative',
+    phase: 1,
+    timeOfDay: ['morgens'],
+    mechanism: 'Sulfonierte Aminosäure mit GABAerger Modulation, osmoprotektiver und antioxidativer Wirkung. Schützt vor Glutamat-Exzitotoxizität (synergistisch mit NAC).',
+    effects: 'Neuroprotektiv, GABAerg, antioxidativ, Glutamat-Schutz',
+    synergiesWith: ['nac'],
+    riskLevel: 'safe',
+    emoji: '🔋',
+    color: '#10b981'
+  },
+  {
+    id: 'nac-abends',
+    name: 'NAC (Abends)',
+    dose: '600mg',
+    category: 'Neurorestorative',
+    phase: 1,
+    timeOfDay: ['abends'],
+    mechanism: 'Zweite Tagesdosis für therapeutische Glutamat-Regulation via System Xc-. 600mg 1x/Tag ist subtherapeutisch nach Substanzmissbrauch. Klinische Studien verwenden 1200-2400mg/Tag.',
+    effects: 'Glutamat-Normalisierung, kontinuierlicher Glutathion-Schutz',
+    riskLevel: 'safe',
+    emoji: '🛡️',
+    color: '#10b981'
+  },
+  {
+    id: 'phosphatidylserin',
+    name: 'Phosphatidylserin',
+    dose: '100-200mg',
+    category: 'Schlaf',
+    phase: 1,
+    timeOfDay: ['abends'],
+    isOptional: true,
+    mechanism: 'Senkt abendliches Cortisol (HPA-Achsen-Modulation), verbessert Membranfluidität synergistisch mit Omega-3/DHA.',
+    effects: 'Cortisol-Senkung abends, Membranreparatur, Schlafverbesserung',
+    synergiesWith: ['omega3'],
+    riskLevel: 'safe',
+    emoji: '🌙',
+    color: '#6b7280'
+  },
+  {
     id: 'cdp-cholin',
     name: 'CDP-Cholin',
     dose: '500mg',
@@ -214,21 +295,24 @@ export const SUPPLEMENTS: Supplement[] = [
     mechanism: 'Mitochondrialer Elektronenträger → verbessert Atmungskette-Effizienz. Schwacher MAO-Hemmer. Bei niedrigen Dosen Hormesis-Effekt.',
     effects: 'Mitochondriale Funktion, Energie, kognitive Klarheit',
     cycling: 'Nur Mo + Do',
-    interactions: ['5htp', 'lsd'],
+    interactions: ['5htp', 'lsd', '9mebc'],
+    riskLevel: 'monitored',
     emoji: '🔵',
     color: '#4361ee'
   },
   {
     id: 'bromantane',
     name: 'Bromantane',
-    dose: 'Standard-Dosis',
+    dose: '50-100mg',
     category: 'Nootropikum',
     phase: 2,
     timeOfDay: ['nachmittags'],
     daysOfWeek: [1, 2, 3, 4, 5],
-    mechanism: 'Actoprotector – erhöht Hitzeschockproteine und antioxidative Enzyme. Moduliert Dopamin-Synthese. Adaptogen-Wirkung.',
+    mechanism: 'Actoprotector – erhöht Hitzeschockproteine und antioxidative Enzyme. Upreguliert Tyrosin-Hydroxylase (TH) – das Schlüsselenzym der Dopamin-Synthese. KRITISCHE Synergie mit L-Tyrosin als Substrat. Adaptogen-Wirkung.',
     effects: 'Ausdauer, Stressresistenz, Dopamin-Modulation, keine Toleranz',
-    cycling: '5 Tage an / 2 Tage aus (Wochenende), 8 Wochen an / 2 Wochen Pause',
+    cycling: '5 Tage an / 2 Tage aus (Wochenende), 4 Wochen an / 1 Woche Pause',
+    synergiesWith: ['l-tyrosin'],
+    riskLevel: 'monitored',
     emoji: '🔶',
     color: '#f59e0b'
   },
@@ -243,6 +327,7 @@ export const SUPPLEMENTS: Supplement[] = [
     effects: 'Extreme Fokus, Energie, Lernkapazität, Motivation',
     cycling: '2-3x/Woche an Lerntagen, nie täglich (schnelle Toleranzentwicklung)',
     interactions: ['tak653'],
+    riskLevel: 'experimental',
     emoji: '🚀',
     color: '#ef4444'
   },
@@ -255,8 +340,9 @@ export const SUPPLEMENTS: Supplement[] = [
     timeOfDay: ['morgens'],
     mechanism: 'Beta-Carbolin – hemmt MAO-A/B → erhöht Dopamin, Serotonin, Noradrenalin. Stimuliert Neurogenese im Hippocampus. Lichtempfindlichkeit als Nebenwirkung.',
     effects: 'Neurogenese, Dopamin-Boost, Stimmung, Kognition',
-    cycling: '2 Wochen an (2x/Woche: Mo+Do) → 4 Wochen Pause',
-    interactions: ['uv'],
+    cycling: '2 Wochen an (2x/Woche: Di+Fr) → 4 Wochen Pause',
+    interactions: ['uv', 'methylenblau', 'lsd'],
+    riskLevel: 'experimental',
     emoji: '🌱',
     color: '#10b981'
   },
@@ -270,6 +356,8 @@ export const SUPPLEMENTS: Supplement[] = [
     mechanism: '⚠️ Experimentell – begrenzte Humandaten. Nur mit strenger Selbstbeobachtung! HGF/c-Met-Agonist – aktiviert Hepatocyte Growth Factor → starke Synaptogenese. 7 Millionen Mal potenter als BDNF. Permanente Gedächtnisverbesserung möglich.',
     effects: 'Maximale Neurogenese, Synaptogenese, Langzeitgedächtnis',
     cycling: '4 Wochen an → 4 Wochen Pause',
+    criticalNote: '⚠️ HGF/c-Met Pathway ist onkogen – regelmäßige Hautuntersuchung empfohlen. Keinerlei Humandaten vorhanden.',
+    riskLevel: 'research-only',
     emoji: '💎',
     color: '#ef4444'
   },
@@ -283,7 +371,8 @@ export const SUPPLEMENTS: Supplement[] = [
     mechanism: '5-HT2A-Agonist – Neuroplastizität, BDNF-Erhöhung, Default-Mode-Network-Unterbrechung. Fadiman-Protokoll für kognitive Verbesserung ohne psychedelische Effekte.',
     effects: 'Kreativität, Verbindungsdenken, Flow-Zustände, Neuroplastizität',
     cycling: 'Fadiman: 1 Tag an → 2 Tage aus',
-    interactions: ['methylenblau', '5htp'],
+    interactions: ['methylenblau', '5htp', '9mebc'],
+    riskLevel: 'experimental',
     emoji: '🌈',
     color: '#8b5cf6'
   },
@@ -297,7 +386,9 @@ export const SUPPLEMENTS: Supplement[] = [
     mechanism: 'AMPA-Rezeptor Positive Allosteric Modulator (PAM) – verstärkt glutamaterge Übertragung → verbessert synaptische Plastizität und LTP (Langzeitpotenzierung).',
     effects: 'Synaptische Plastizität, Lernen, Gedächtniskonsolidierung',
     cycling: 'Max 3x/Woche an Lerntagen, ab Woche 16',
-    interactions: ['phenylpiracetam', '9mebc'],
+    interactions: ['phenylpiracetam', '9mebc', 'methylenblau'],
+    timingNote: 'Frühestens ab Woche 16. In Kombi IMMER 1mg, nie 2mg.',
+    riskLevel: 'research-only',
     emoji: '⚗️',
     color: '#ef4444'
   }

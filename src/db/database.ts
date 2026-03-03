@@ -42,11 +42,41 @@ export interface TodoItem {
   completedAt?: number
 }
 
+export interface Habit {
+  id: string
+  name: string
+  emoji: string
+  category: string
+  frequency: 'daily' | 'custom'
+  customDays?: number[]
+  trackingType: 'boolean' | 'counter' | 'duration' | 'scale'
+  targetValue?: number
+  unit?: string
+  color: string
+  isSystemHabit: boolean
+  createdAt: number
+  archivedAt?: number
+  streakEnabled: boolean
+  neurobiologicalNote?: string
+  sortOrder: number
+}
+
+export interface HabitLog {
+  id?: number
+  habitId: string
+  date: string // YYYY-MM-DD
+  completed: boolean
+  value?: number
+  note?: string
+}
+
 export class NeuroStackDB extends Dexie {
   dailyLogs!: Table<DailyLog>
   checklistCompletions!: Table<ChecklistCompletion>
   settings!: Table<Settings>
   todos!: Table<TodoItem>
+  habits!: Table<Habit>
+  habitLogs!: Table<HabitLog>
 
   constructor() {
     super('NeuroStackDB')
@@ -73,6 +103,27 @@ export class NeuroStackDB extends Dexie {
       checklistCompletions: '++id, date, itemId, [date+itemId]',
       settings: '++id, key',
       todos: '++id, completed, priority, dueDate, createdAt'
+    })
+    this.version(4).stores({
+      dailyLogs: '++id, date',
+      checklistCompletions: '++id, date, itemId, [date+itemId]',
+      settings: '++id, key',
+      todos: '++id, completed, priority, dueDate, createdAt',
+      habits: 'id, category, isSystemHabit, sortOrder',
+      habitLogs: '++id, habitId, date, [habitId+date]'
+    }).upgrade(async tx => {
+      const systemHabits: Habit[] = [
+        { id: 'training', name: 'Krafttraining', emoji: '🏋️', category: 'Fitness', frequency: 'custom', customDays: [1, 3, 5], trackingType: 'boolean', color: '#ef4444', isSystemHabit: true, createdAt: Date.now(), streakEnabled: true, sortOrder: 0 },
+        { id: 'cardio', name: 'Cardio 20min', emoji: '🏃', category: 'Fitness', frequency: 'custom', customDays: [3, 5, 0], trackingType: 'duration', targetValue: 20, unit: 'min', color: '#f59e0b', isSystemHabit: true, createdAt: Date.now(), streakEnabled: false, sortOrder: 1 },
+        { id: 'meditation', name: 'Meditation/Breathwork', emoji: '🧘', category: 'Mental', frequency: 'daily', trackingType: 'duration', targetValue: 10, unit: 'min', color: '#8b5cf6', isSystemHabit: true, createdAt: Date.now(), streakEnabled: true, sortOrder: 2 },
+        { id: 'cold-shower', name: 'Kalte Dusche', emoji: '🧊', category: 'Körper', frequency: 'daily', trackingType: 'duration', targetValue: 3, unit: 'min', color: '#4361ee', isSystemHabit: true, createdAt: Date.now(), streakEnabled: true, sortOrder: 3 },
+        { id: 'sunlight', name: 'Sonnenlicht 30min', emoji: '☀️', category: 'Körper', frequency: 'daily', trackingType: 'boolean', color: '#f59e0b', isSystemHabit: true, createdAt: Date.now(), streakEnabled: false, sortOrder: 4 },
+        { id: 'no-smoking', name: 'Nicht geraucht', emoji: '🚭', category: 'Gesundheit', frequency: 'daily', trackingType: 'boolean', color: '#10b981', isSystemHabit: true, createdAt: Date.now(), streakEnabled: true, sortOrder: 5 },
+        { id: 'journaling', name: 'Journal-Eintrag', emoji: '📓', category: 'Mental', frequency: 'daily', trackingType: 'boolean', color: '#6b7280', isSystemHabit: true, createdAt: Date.now(), streakEnabled: true, sortOrder: 6 }
+      ]
+      const existingIds = await tx.table('habits').toCollection().primaryKeys()
+      const toAdd = systemHabits.filter(h => !existingIds.includes(h.id))
+      if (toAdd.length > 0) await tx.table('habits').bulkAdd(toAdd)
     })
   }
 }
