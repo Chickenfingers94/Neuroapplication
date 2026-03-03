@@ -78,7 +78,12 @@ export function getMethylenblauStatus(currentDate: Date): CycleResult {
   if (dayOfWeek === 1 || dayOfWeek === 4) {
     return { status: 'on', daysUntilNext: 0, cycleDay: dayOfWeek, cycleInfo: 'Einnahmetag (Mo/Do)' }
   }
-  const nextDay = dayOfWeek < 1 ? 1 : (dayOfWeek < 4 ? 4 : 8)
-  const days = nextDay - dayOfWeek
+  // Calculate days until next intake day (Mon=1 or Thu=4)
+  let days: number
+  if (dayOfWeek === 0) days = 1        // Sun -> Mon: 1 day
+  else if (dayOfWeek === 2) days = 2   // Tue -> Thu: 2 days
+  else if (dayOfWeek === 3) days = 1   // Wed -> Thu: 1 day
+  else if (dayOfWeek === 5) days = 3   // Fri -> Mon: 3 days
+  else days = 2                        // Sat -> Mon: 2 days
   return { status: 'off', daysUntilNext: days, cycleDay: dayOfWeek, cycleInfo: `Kein Einnahmetag (${days} Tage bis nächste)` }
 }
