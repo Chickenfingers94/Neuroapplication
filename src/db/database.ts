@@ -109,7 +109,7 @@ export class NeuroStackDB extends Dexie {
       checklistCompletions: '++id, date, itemId, [date+itemId]',
       settings: '++id, key',
       todos: '++id, completed, priority, dueDate, createdAt',
-      habits: 'id, category, isSystemHabit, sortOrder',
+      habits: 'id, category, isSystemHabit, sortOrder, archivedAt',
       habitLogs: '++id, habitId, date, [habitId+date]'
     }).upgrade(async tx => {
       const systemHabits: Habit[] = [

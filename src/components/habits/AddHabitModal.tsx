@@ -122,7 +122,7 @@ export const AddHabitModal: React.FC<AddHabitModalProps> = ({ onClose, onAdd }) 
 
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-300">🔥 Streak verfolgen</span>
-          <button onClick={() => setStreakEnabled(v => !v)} className={`w-12 h-6 rounded-full transition-colors ${streakEnabled ? 'bg-blue-600' : 'bg-gray-600'}`}>
+          <button onClick={() => setStreakEnabled(v => !v)} aria-label="Toggle streak tracking" className={`w-12 h-6 rounded-full transition-colors ${streakEnabled ? 'bg-blue-600' : 'bg-gray-600'}`}>
             <span className={`block w-5 h-5 bg-white rounded-full shadow transition-transform mx-0.5 ${streakEnabled ? 'translate-x-6' : 'translate-x-0'}`} />
           </button>
         </div>

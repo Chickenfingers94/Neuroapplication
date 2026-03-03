@@ -37,7 +37,7 @@ async function calculateStreak(habitId: string, today: string): Promise<number> 
   return streak
 }
 
-async function calculateCompletionRate30d(habitId: string, today: string): Promise<number> {
+async function calculateCompletionRate30d(habitId: string, today: string, habit: Habit): Promise<number> {
   const d = new Date(today + 'T12:00:00')
   const cutoff = new Date(d)
   cutoff.setDate(cutoff.getDate() - 29)
@@ -47,7 +47,14 @@ async function calculateCompletionRate30d(habitId: string, today: string): Promi
     .filter(l => l.date >= cutoffStr && l.date <= today)
     .toArray()
   const completed = logs.filter(l => l.completed).length
-  return completed / 30
+  // Count scheduled days in the 30-day window
+  let scheduledDays = 0
+  for (let i = 0; i < 30; i++) {
+    const day = new Date(d)
+    day.setDate(day.getDate() - i)
+    if (isScheduledForDay(habit, day.getDay())) scheduledDays++
+  }
+  return scheduledDays > 0 ? completed / scheduledDays : 0
 }
 
 export function useHabits() {
@@ -59,11 +66,9 @@ export function useHabits() {
   const load = useCallback(async () => {
     setLoading(true)
     const allHabits = await db.habits
-      .where('archivedAt').equals(0)
-      .sortBy('sortOrder')
-      .catch(() =>
-        db.habits.orderBy('sortOrder').filter(h => !h.archivedAt).toArray()
-      )
+      .orderBy('sortOrder')
+      .filter(h => !h.archivedAt)
+      .toArray()
 
     const todayLogs = await db.habitLogs.where('date').equals(today).toArray()
     const logMap = new Map<string, HabitLog>(todayLogs.map(l => [l.habitId, l]))
@@ -74,7 +79,7 @@ export function useHabits() {
         const todayLog = logMap.get(habit.id)
         const isCompletedToday = todayLog?.completed ?? false
         const currentStreak = habit.streakEnabled ? await calculateStreak(habit.id, today) : 0
-        const completionRate30d = await calculateCompletionRate30d(habit.id, today)
+        const completionRate30d = await calculateCompletionRate30d(habit.id, today, habit)
         return { ...habit, isScheduledToday, isCompletedToday, currentStreak, completionRate30d, todayLog }
       })
     )
