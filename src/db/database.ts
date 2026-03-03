@@ -82,13 +82,17 @@ export async function exportAllData(): Promise<object> {
   return { dailyLogs, checklistCompletions, settings, exportedAt: new Date().toISOString() }
 }
 
+function stripId<T extends { id?: number }>(items: T[]): Omit<T, 'id'>[] {
+  return items.map(({ id: _, ...rest }) => rest as Omit<T, 'id'>)
+}
+
 export async function importAllData(data: Record<string, unknown>): Promise<void> {
   await db.transaction('rw', db.dailyLogs, db.checklistCompletions, db.settings, async () => {
     await db.dailyLogs.clear()
     await db.checklistCompletions.clear()
     await db.settings.clear()
-    if (data.dailyLogs) await db.dailyLogs.bulkAdd((data.dailyLogs as DailyLog[]).map((l) => { const { id: _, ...rest } = l; return rest }))
-    if (data.checklistCompletions) await db.checklistCompletions.bulkAdd((data.checklistCompletions as ChecklistCompletion[]).map((c) => { const { id: _, ...rest } = c; return rest }))
-    if (data.settings) await db.settings.bulkAdd((data.settings as Settings[]).map((s) => { const { id: _, ...rest } = s; return rest }))
+    if (data.dailyLogs) await db.dailyLogs.bulkAdd(stripId(data.dailyLogs as DailyLog[]))
+    if (data.checklistCompletions) await db.checklistCompletions.bulkAdd(stripId(data.checklistCompletions as ChecklistCompletion[]))
+    if (data.settings) await db.settings.bulkAdd(stripId(data.settings as Settings[]))
   })
 }

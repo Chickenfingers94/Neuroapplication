@@ -37,8 +37,9 @@ const Settings: React.FC = () => {
       await importAllData(data)
       setImportStatus('✅ Import erfolgreich!')
       setTimeout(() => { setImportStatus(''); window.location.reload() }, 2000)
-    } catch {
-      setImportStatus('❌ Import fehlgeschlagen. Ungültiges Format.')
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      setImportStatus(`❌ Import fehlgeschlagen: ${msg}`)
     }
   }
 
