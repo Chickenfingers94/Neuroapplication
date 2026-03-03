@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TodoItem, getAllTodos, addTodo, updateTodo, deleteTodo } from '../db/database'
+import { parseDateString } from '../utils/dateUtils'
 
 const PRIORITY_COLORS: Record<string, string> = {
   low: 'text-gray-400 border-gray-600',
@@ -178,7 +179,7 @@ const Todo: React.FC = () => {
                 </span>
                 {todo.dueDate && (
                   <span className="text-xs text-gray-500">
-                    📅 {new Date(todo.dueDate + 'T12:00:00').toLocaleDateString('de-DE', { day: 'numeric', month: 'short' })}
+                    📅 {parseDateString(todo.dueDate).toLocaleDateString('de-DE', { day: 'numeric', month: 'short' })}
                   </span>
                 )}
               </div>

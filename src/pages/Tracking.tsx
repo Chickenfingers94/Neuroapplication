@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ScoreSlider } from '../components/tracking/ScoreSlider'
 import { TrendChart } from '../components/tracking/TrendChart'
 import { DailyLog, getDailyLog, saveDailyLog, db } from '../db/database'
-import { getTodayString } from '../utils/dateUtils'
+import { getTodayString, parseDateString } from '../utils/dateUtils'
 
 type TrainingType = 'none' | 'kraft' | 'cardio' | 'hiit' | 'kraft+cardio'
 
@@ -102,7 +102,7 @@ const Tracking: React.FC = () => {
   const coldShowerStreak = calcStreak(l => !!l.coldShower)
   const trainingThisWeek = logs
     .filter(l => {
-      const d = new Date(l.date + 'T12:00:00')
+      const d = parseDateString(l.date)
       const now = new Date()
       const weekStart = new Date(now)
       weekStart.setDate(now.getDate() - now.getDay())

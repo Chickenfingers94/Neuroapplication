@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { db } from '../db/database'
+import { parseDateString, formatGermanDate } from '../utils/dateUtils'
 
 const WEEKDAYS = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
 const MONTHS = [
@@ -117,7 +118,7 @@ const Calendar: React.FC = () => {
       {selectedDate && (
         <div className="bg-navy-700 rounded-xl border border-gray-700 p-4 animate-fadeIn">
           <h3 className="font-semibold text-white mb-2">
-            📆 {new Date(selectedDate + 'T12:00:00').toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+            📆 {formatGermanDate(parseDateString(selectedDate))}
           </h3>
           {!logDates.has(selectedDate) && !checklistDates.has(selectedDate) && (
             <p className="text-sm text-gray-500">Keine Daten für diesen Tag.</p>

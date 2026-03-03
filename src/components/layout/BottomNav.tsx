@@ -48,7 +48,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ active, onChange }) => {
                 <span className="absolute top-1 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-blue-400 rounded-full" />
               )}
               <span className="text-lg leading-none">{tab.emoji}</span>
-              <span className="text-[10px] font-medium mt-0.5">{tab.label}</span>
+              <span className="text-xs font-medium mt-0.5">{tab.label}</span>
             </button>
           )
         })}
