@@ -35,7 +35,7 @@ const Cycling: React.FC<CyclingProps> = ({ cycling, phaseState }) => {
               </div>
               <div>
                 <div className="text-2xl font-bold text-white">
-                  {Math.round((phaseState.weekNumber / 52) * 100)}%
+                  {Math.min(100, Math.max(0, Math.round((phaseState.weekNumber / 52) * 100)))}%
                 </div>
                 <div className="text-xs text-gray-500 font-medium">Jahres-Ziel</div>
               </div>

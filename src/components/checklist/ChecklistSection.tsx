@@ -52,7 +52,7 @@ export const ChecklistSection: React.FC<ChecklistSectionProps> = ({ title, emoji
                 {item.isOptional && !item.disabled && ' • Optional'}
               </div>
             </div>
-            {item.supplement.isOptional && !item.disabled && (
+            {item.isOptional && !item.disabled && (
               <span className="text-xs bg-gray-700 px-2 py-0.5 rounded-full text-gray-400 flex-shrink-0">opt.</span>
             )}
           </button>
