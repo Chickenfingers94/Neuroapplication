@@ -37,3 +37,8 @@ export function formatShortGermanDate(date: Date): string {
 
 export const DAYS_DE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
 export const DAYS_SHORT_DE = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
+
+/** Parses a YYYY-MM-DD date string at noon local time to avoid timezone edge cases. */
+export function parseDateString(dateStr: string): Date {
+  return new Date(dateStr + 'T12:00:00')
+}

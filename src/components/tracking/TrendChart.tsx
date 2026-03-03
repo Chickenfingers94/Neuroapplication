@@ -1,7 +1,7 @@
 import React from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import { DailyLog } from '../../db/database'
-import { DAYS_SHORT_DE } from '../../utils/dateUtils'
+import { DAYS_SHORT_DE, parseDateString } from '../../utils/dateUtils'
 
 interface TrendChartProps {
   logs: DailyLog[]
@@ -10,7 +10,7 @@ interface TrendChartProps {
 
 export const TrendChart: React.FC<TrendChartProps> = ({ logs, title }) => {
   const data = logs.slice(-30).map(log => ({
-    date: DAYS_SHORT_DE[new Date(log.date + 'T12:00:00').getDay()],
+    date: DAYS_SHORT_DE[parseDateString(log.date).getDay()],
     Schlaf: log.sleep,
     Fokus: log.focus,
     Stimmung: log.mood,

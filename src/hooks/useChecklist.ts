@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { getTodayString, getDayOfWeek } from '../utils/dateUtils'
+import { getTodayString, getDayOfWeek, parseDateString } from '../utils/dateUtils'
 import { getChecklistForDate, toggleChecklistItem } from '../db/database'
 import { SUPPLEMENTS, Supplement } from '../data/supplements'
 import { CyclingStatus } from './useCycling'
@@ -28,7 +28,7 @@ export function useChecklist(phase: 1 | 2 | 3, cycling: CyclingStatus, date: str
 } {
   const [completions, setCompletions] = useState<Record<string, boolean>>({})
   const [loading, setLoading] = useState(true)
-  const dayOfWeek = getDayOfWeek(new Date(date + 'T12:00:00'))
+  const dayOfWeek = getDayOfWeek(parseDateString(date))
 
   useEffect(() => {
     async function load() {

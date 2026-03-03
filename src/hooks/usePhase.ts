@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getSetting } from '../db/database'
 import { getWeekNumber } from '../utils/dateUtils'
-import { getPhaseForWeek, PhaseInfo } from '../data/phases'
+import { getPhaseForWeek, PhaseInfo, PHASES } from '../data/phases'
 
 export interface PhaseState {
   phase: PhaseInfo
@@ -10,8 +10,15 @@ export interface PhaseState {
   loading: boolean
 }
 
+const DEFAULT_PHASE_STATE: PhaseState = {
+  phase: PHASES[0],
+  weekNumber: 1,
+  startDate: null,
+  loading: true
+}
+
 export function usePhase(): PhaseState {
-  const [state, setState] = useState<PhaseState>({ phase: { phase: 1, name: 'Fundament', weekStart: 1, weekEnd: 4, description: '', color: '#4361ee', emoji: '🏗️' }, weekNumber: 1, startDate: null, loading: true })
+  const [state, setState] = useState<PhaseState>(DEFAULT_PHASE_STATE)
 
   useEffect(() => {
     async function load() {
