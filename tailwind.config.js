@@ -8,7 +8,11 @@ export default {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       colors: {
-        navy: { 900: '#0d0d1a', 800: '#1a1a2e', 700: '#16213e', 600: '#0f3460' },
+        navy: { 950: '#0a0a1a', 900: '#0d0d1a', 800: '#1a1a2e', 700: '#16213e', 600: '#0f3460' },
+        accent: {
+          purple: { DEFAULT: '#8b5cf6', light: '#a78bfa', dark: '#7c3aed' },
+          cyan: { DEFAULT: '#06b6d4', light: '#22d3ee', dark: '#0891b2' }
+        },
         phase1: '#4361ee',
         phase2: '#f59e0b',
         phase3: '#ef4444',

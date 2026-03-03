@@ -21,7 +21,7 @@ export interface DailyChecklist {
   completed: number
 }
 
-export function useChecklist(phase: 1 | 2 | 3, cycling: CyclingStatus, date: string = getTodayString()): {
+export function useChecklist(phase: 1 | 2 | 3, cycling: CyclingStatus, date: string = getTodayString(), strategy: 'conservative' | 'experimental' = 'conservative'): {
   checklist: DailyChecklist
   toggle: (itemId: string) => Promise<void>
   loading: boolean
@@ -50,6 +50,7 @@ export function useChecklist(phase: 1 | 2 | 3, cycling: CyclingStatus, date: str
       if (s.id === 'bromantane' && !cycling.isBromantaneDay) return false
       if (s.id === '9mebc' && !cycling.is9MeBCDay) return false
       if (s.id === 'dihexa' && !cycling.isDihexaDay) return false
+      if (s.id === 'dihexa' && strategy === 'conservative') return false
       if (s.id === 'lsd' && !cycling.isLSDDay) return false
       if (s.id === 'phenylpiracetam' && !cycling.isPhenylpiracetamAllowed) return false
       if (s.id === 'tak653' && !cycling.isTAK653Allowed) return false
@@ -75,7 +76,7 @@ export function useChecklist(phase: 1 | 2 | 3, cycling: CyclingStatus, date: str
     const completed = notDisabled.filter(i => i.completed).length
 
     return { morgens, nachmittags, abends, total: notDisabled.length, completed }
-  }, [phase, cycling, dayOfWeek, completions])
+  }, [phase, cycling, dayOfWeek, completions, strategy])
 
   const toggle = useCallback(async (itemId: string) => {
     const current = completions[itemId] || false

@@ -256,7 +256,7 @@ export const SUPPLEMENTS: Supplement[] = [
     mechanism: 'Beta-Carbolin – hemmt MAO-A/B → erhöht Dopamin, Serotonin, Noradrenalin. Stimuliert Neurogenese im Hippocampus. Lichtempfindlichkeit als Nebenwirkung.',
     effects: 'Neurogenese, Dopamin-Boost, Stimmung, Kognition',
     cycling: '2 Wochen an (2x/Woche: Mo+Do) → 4 Wochen Pause',
-    interactions: [],
+    interactions: ['uv'],
     emoji: '🌱',
     color: '#10b981'
   },
@@ -267,7 +267,7 @@ export const SUPPLEMENTS: Supplement[] = [
     category: 'Neurorestorative',
     phase: 3,
     timeOfDay: ['morgens'],
-    mechanism: 'HGF/c-Met-Agonist – aktiviert Hepatocyte Growth Factor → starke Synaptogenese. 7 Millionen Mal potenter als BDNF. Permanente Gedächtnisverbesserung möglich.',
+    mechanism: '⚠️ Experimentell – begrenzte Humandaten. Nur mit strenger Selbstbeobachtung! HGF/c-Met-Agonist – aktiviert Hepatocyte Growth Factor → starke Synaptogenese. 7 Millionen Mal potenter als BDNF. Permanente Gedächtnisverbesserung möglich.',
     effects: 'Maximale Neurogenese, Synaptogenese, Langzeitgedächtnis',
     cycling: '4 Wochen an → 4 Wochen Pause',
     emoji: '💎',
@@ -297,7 +297,7 @@ export const SUPPLEMENTS: Supplement[] = [
     mechanism: 'AMPA-Rezeptor Positive Allosteric Modulator (PAM) – verstärkt glutamaterge Übertragung → verbessert synaptische Plastizität und LTP (Langzeitpotenzierung).',
     effects: 'Synaptische Plastizität, Lernen, Gedächtniskonsolidierung',
     cycling: 'Max 3x/Woche an Lerntagen, ab Woche 16',
-    interactions: ['phenylpiracetam'],
+    interactions: ['phenylpiracetam', '9mebc'],
     emoji: '⚗️',
     color: '#ef4444'
   }
