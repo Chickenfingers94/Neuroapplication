@@ -4,12 +4,44 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
       colors: {
         navy: { 900: '#0d0d1a', 800: '#1a1a2e', 700: '#16213e', 600: '#0f3460' },
         phase1: '#4361ee',
         phase2: '#f59e0b',
         phase3: '#ef4444',
-      }
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(67, 97, 238, 0.4)' },
+          '50%': { boxShadow: '0 0 0 8px rgba(67, 97, 238, 0)' },
+        },
+        'pulse-border': {
+          '0%, 100%': { borderColor: 'rgba(239, 68, 68, 0.5)' },
+          '50%': { borderColor: 'rgba(239, 68, 68, 1)' },
+        },
+        'scale-in': {
+          '0%': { transform: 'scale(0)' },
+          '100%': { transform: 'scale(1)' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.3s ease-out forwards',
+        slideUp: 'slideUp 0.4s ease-out forwards',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+        'pulse-border': 'pulse-border 1.5s ease-in-out infinite',
+        'scale-in': 'scale-in 0.2s ease-out forwards',
+      },
     }
   },
   plugins: []

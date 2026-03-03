@@ -31,7 +31,9 @@ export const WarningBanner: React.FC<WarningBannerProps> = ({ cycling, phase }) 
         <div
           key={w.id}
           className={`flex items-start gap-2 p-3 rounded-xl text-sm font-medium ${
-            w.level === 'danger' ? 'bg-red-900/50 text-red-200 border border-red-700' : 'bg-yellow-900/50 text-yellow-200 border border-yellow-700'
+            w.level === 'danger'
+              ? 'bg-red-900/50 text-red-200 border animate-pulse-border'
+              : 'bg-yellow-900/50 text-yellow-200 border border-yellow-700'
           }`}
         >
           <span className="text-base flex-shrink-0">{w.emoji}</span>
@@ -39,7 +41,7 @@ export const WarningBanner: React.FC<WarningBannerProps> = ({ cycling, phase }) 
         </div>
       ))}
       {synergies.map(s => (
-        <div key={s.id} className="flex items-start gap-2 p-3 rounded-xl text-sm font-medium bg-green-900/50 text-green-200 border border-green-700">
+        <div key={s.id} className="flex items-start gap-2 p-3 rounded-xl text-sm font-medium bg-gradient-to-r from-green-900/50 to-navy-700 text-green-200 border border-green-700/60">
           <span className="text-base flex-shrink-0">{s.emoji}</span>
           <span>{s.message}</span>
         </div>

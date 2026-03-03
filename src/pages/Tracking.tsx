@@ -51,19 +51,19 @@ const Tracking: React.FC = () => {
       </div>
 
       <div className="bg-navy-700 rounded-xl border border-gray-700 p-4">
-        <label className="text-sm font-medium text-gray-300 block mb-2">📝 Notizen</label>
+        <label className="text-sm font-semibold text-gray-300 block mb-2">📝 Notizen</label>
         <textarea
           value={notes}
           onChange={e => setNotes(e.target.value)}
           placeholder="Wie war dein Tag? Besondere Beobachtungen..."
-          className="w-full bg-navy-800 text-white placeholder-gray-500 rounded-lg p-3 text-sm resize-none border border-gray-600 focus:border-blue-500 focus:outline-none"
+          className="w-full bg-navy-800 text-white placeholder-gray-500 rounded-lg p-3 text-sm resize-none border border-gray-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/40 transition-all"
           rows={3}
         />
       </div>
 
       <button
         onClick={handleSave}
-        className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${saved ? 'bg-green-600 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white active:scale-95'}`}
+        className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${saved ? 'bg-green-600 text-white scale-95' : 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white active:scale-95 shadow-lg shadow-blue-600/30'}`}
       >
         {saved ? '✅ Gespeichert!' : '💾 Speichern'}
       </button>
@@ -75,7 +75,11 @@ const Tracking: React.FC = () => {
           { label: 'Stimmung', value: avg('mood'), emoji: '😊', color: '#10b981' },
           { label: 'Energie', value: avg('energy'), emoji: '⚡', color: '#ef4444' }
         ].map(stat => (
-          <div key={stat.label} className="bg-navy-700 rounded-xl p-3 border border-gray-700 text-center">
+          <div
+            key={stat.label}
+            className="bg-navy-700 rounded-xl p-3 border border-gray-700 text-center overflow-hidden relative"
+            style={{ borderTop: `2px solid ${stat.color}` }}
+          >
             <div className="text-xl mb-1">{stat.emoji}</div>
             <div className="text-lg font-bold" style={{ color: stat.color }}>{stat.value}</div>
             <div className="text-xs text-gray-500">{stat.label} Ø7T</div>

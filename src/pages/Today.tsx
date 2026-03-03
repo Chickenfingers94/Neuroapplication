@@ -23,7 +23,7 @@ const Today: React.FC<TodayProps> = ({ phaseState, cycling }) => {
 
   return (
     <div className="pb-4">
-      <ProgressBar completed={checklist.completed} total={checklist.total} />
+      <ProgressBar completed={checklist.completed} total={checklist.total} phaseColor={phaseState.phase.color} />
       <WarningBanner cycling={cycling} phase={phaseState.phase.phase} />
 
       <ChecklistSection title="Morgens" emoji="☀️" items={checklist.morgens} onToggle={toggle} />
