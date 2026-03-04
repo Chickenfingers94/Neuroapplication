@@ -24,9 +24,6 @@ export const ConflictBanner: React.FC<ConflictBannerProps> = ({ cycling, phase }
   const dangers = INTERACTION_WARNINGS.filter(w => w.level === 'danger' && activeConditions.includes(w.condition))
   const cautions = INTERACTION_WARNINGS.filter(w => w.level === 'caution' && activeConditions.includes(w.condition))
 
-  // 9-Me-BC UV/Winter specific warning
-  const show9MeBCWarning = cycling.is9MeBCDay
-
   const activeSynergies = SYNERGY_NOTES.filter(s => {
     if (s.id === 'lm-dihexa') return cycling.isDihexaDay && phase >= 3
     if (s.id === 'creat-cdp') return phase >= 2
@@ -37,7 +34,7 @@ export const ConflictBanner: React.FC<ConflictBannerProps> = ({ cycling, phase }
     return phase >= 1
   })
 
-  if (dangers.length === 0 && cautions.length === 0 && !show9MeBCWarning && activeSynergies.length === 0) return null
+  if (dangers.length === 0 && cautions.length === 0 && activeSynergies.length === 0) return null
 
   return (
     <div className="px-4 py-2 space-y-2">
@@ -51,17 +48,6 @@ export const ConflictBanner: React.FC<ConflictBannerProps> = ({ cycling, phase }
           <span>{w.message}</span>
         </div>
       ))}
-
-      {/* 9-Me-BC UV winter warning */}
-      {show9MeBCWarning && (
-        <div className="flex items-start gap-2 p-3 rounded-xl text-sm font-medium bg-orange-900/50 text-orange-200 border border-orange-700/60">
-          <span className="text-base flex-shrink-0">☀️</span>
-          <span>
-            <strong>9-Me-BC Tag:</strong> UV-Licht strikt meiden! Sonnencreme + bedeckte Haut empfohlen.
-            Tipp: Wintermonate bevorzugt für 9-Me-BC Zyklen.
-          </span>
-        </div>
-      )}
 
       {/* Caution notes */}
       {cautions.map(w => (
